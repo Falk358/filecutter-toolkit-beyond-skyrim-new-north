@@ -1,0 +1,2 @@
+Select:End="0.5" Mode="Set" RelativeTo="Selection" Start="-0.5"
+PasteNewLabel:
