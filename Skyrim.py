@@ -49,7 +49,7 @@ class FileCutterToolkit(object):
                 "Context": 1,
                 "Line to speak": 2,
                 "Acting Note": 3,
-                "Facial Emotion": 4,
+                "Filecutting Note": 4,
                 "Filename": 5,
             }
         }
@@ -179,7 +179,7 @@ class FileCutterToolkit(object):
 
         total_cell = len(self.current_format)
         filename_cell = self.current_format["Filename"]
-        comment_cell = self.current_format["Acting Note"]
+        comment_cell = self.current_format["Filecutting Note"]
 
         row_cells = []
 
@@ -406,7 +406,7 @@ class FileCutterToolkit(object):
 
         for i in range(start, end):
             color = self.get_line_color(i)
-            filecutter_notes = self.get_line_data(i)["Acting Note"]
+            filecutter_notes = self.get_line_data(i)["Filecutting Note"]
 
             if "TODO " in filecutter_notes:
                 template_left += 1
