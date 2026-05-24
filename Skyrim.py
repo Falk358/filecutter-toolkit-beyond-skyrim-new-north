@@ -262,6 +262,21 @@ class FileCutterToolkit(object):
         else:
             return math.floor(float(part) / whole * 100)
 
+    def get_selected_row(self):
+        """
+        Returns the StartRow of the current selection in a robust way,
+        handling both single ranges and multi-range selections.
+        """
+        selection = self.model.CurrentSelection
+        if hasattr(selection, "RangeAddress"):
+            # Single CellRange object
+            return selection.RangeAddress.StartRow
+        elif hasattr(selection, "getByIndex"):
+            # CellRangesByName / SheetCellRanges (multi-selection or LO 26+)
+            return selection.getByIndex(0).RangeAddress.StartRow
+        else:
+            raise RuntimeError("Unexpected selection type: {}".format(type(selection)))
+
     # -----------------------------[ MACROS ]-----------------------------------
 
     @macro
@@ -288,7 +303,7 @@ class FileCutterToolkit(object):
         The filename is put into the clipboard for labeling purpose.
         """
 
-        row_number = self.model.CurrentSelection.RangeAddress.StartRow
+        row_number = self.get_selected_row()
         line_data = self.get_line_data(row_number)
 
         if line_data["Filename"].startswith("IB"):
@@ -306,7 +321,7 @@ class FileCutterToolkit(object):
         a VA defect.
         """
 
-        row_number = self.model.CurrentSelection.RangeAddress.StartRow
+        row_number = self.get_selected_row()
         line_data = self.get_line_data(row_number)
 
         comment = "Script error: TODO red highlight of mispell and comment"
@@ -324,7 +339,7 @@ class FileCutterToolkit(object):
         standard quality wise.
         """
 
-        row_number = self.model.CurrentSelection.RangeAddress.StartRow
+        row_number = self.get_selected_row()
         line_data = self.get_line_data(row_number)
 
         comment = "Sound quality: TODO describe the problem"
@@ -342,7 +357,7 @@ class FileCutterToolkit(object):
         standard acting wise.
         """
 
-        row_number = self.model.CurrentSelection.RangeAddress.StartRow
+        row_number = self.get_selected_row()
         line_data = self.get_line_data(row_number)
 
         comment = "Acting: TODO helpful comment for the voice actor"
@@ -357,7 +372,7 @@ class FileCutterToolkit(object):
         Apply the right color and template comment for a line that is mispronunced.
         """
 
-        row_number = self.model.CurrentSelection.RangeAddress.StartRow
+        row_number = self.get_selected_row()
         line_data = self.get_line_data(row_number)
 
         comment = (
@@ -376,7 +391,7 @@ class FileCutterToolkit(object):
         Apply the right color and comment for a missing line.
         """
 
-        row_number = self.model.CurrentSelection.RangeAddress.StartRow
+        row_number = self.get_selected_row()
         line_data = self.get_line_data(row_number)
 
         comment = "Missing"
