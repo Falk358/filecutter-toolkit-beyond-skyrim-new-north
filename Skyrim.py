@@ -56,7 +56,6 @@ class FileCutterToolkit(object):
 
         # Colors definition
         self.PERFECT_COLOR = 0x00B0F0  # Cyan
-        self.IB_COLOR = 0xFFFF00  # Yellow
         self.MISSING_COLOR = 0xFF0000  # Red
         self.MISPELLED_COLOR = 0x7030A0  # Purple
         self.MISPRONUNCED_COLOR = 0x0070C0  # Blue
@@ -172,7 +171,7 @@ class FileCutterToolkit(object):
 
         return line_data
 
-    def commit_line(self, row_number, color, comment, clipboard=False, bonus_IB=False):
+    def commit_line(self, row_number, color, comment, clipboard=False):
         """
         Actually takes action on a line using the provided informations.
         """
@@ -190,10 +189,7 @@ class FileCutterToolkit(object):
             cell.CellBackColor = color
 
         bonus_cell = self.sheet.getCellByPosition(total_cell, row_number)
-        if bonus_IB:
-            bonus_cell.CellBackColor = self.IB_COLOR
-        else:
-            bonus_cell.IsCellBackgroundTransparent = True
+        bonus_cell.IsCellBackgroundTransparent = True
 
         row_cells[comment_cell].String = comment
 
@@ -215,7 +211,7 @@ class FileCutterToolkit(object):
         else:
             return cell.CellBackColor
 
-    # ----------------------[ LIBREOFFICE UTILITIES ]---------------------------
+    # ----------------------[ LI    BREOFFICE UTILITIES ]---------------------------
 
     def create_instance(self, name, with_context=False):
 
@@ -315,15 +311,9 @@ class FileCutterToolkit(object):
         """
 
         row_number = self.get_selected_row()
-        line_data = self.get_line_data(row_number)
 
         comment = "Script error: TODO red highlight of mispell and comment"
-        if line_data["Filename"].startswith("IB"):
-            self.commit_line(
-                row_number, self.MISPELLED_COLOR, comment, clipboard=True, bonus_IB=True
-            )
-        else:
-            self.commit_line(row_number, self.MISPELLED_COLOR, comment, clipboard=True)
+        self.commit_line(row_number, self.MISPELLED_COLOR, comment, clipboard=True)
 
     @macro
     def sound_quality(self):
@@ -333,15 +323,9 @@ class FileCutterToolkit(object):
         """
 
         row_number = self.get_selected_row()
-        line_data = self.get_line_data(row_number)
 
         comment = "Sound quality: TODO describe the problem"
-        if line_data["Filename"].startswith("IB"):
-            self.commit_line(
-                row_number, self.SOUND_QUALITY_COLOR, comment, bonus_IB=True
-            )
-        else:
-            self.commit_line(row_number, self.SOUND_QUALITY_COLOR, comment)
+        self.commit_line(row_number, self.SOUND_QUALITY_COLOR, comment)
 
     @macro
     def acting(self):
@@ -351,13 +335,9 @@ class FileCutterToolkit(object):
         """
 
         row_number = self.get_selected_row()
-        line_data = self.get_line_data(row_number)
 
         comment = "Acting: TODO helpful comment for the voice actor"
-        if line_data["Filename"].startswith("IB"):
-            self.commit_line(row_number, self.ACTING_COLOR, comment, bonus_IB=True)
-        else:
-            self.commit_line(row_number, self.ACTING_COLOR, comment)
+        self.commit_line(row_number, self.ACTING_COLOR, comment)
 
     @macro
     def mispronunced(self):
@@ -366,17 +346,10 @@ class FileCutterToolkit(object):
         """
 
         row_number = self.get_selected_row()
-        line_data = self.get_line_data(row_number)
-
         comment = (
             "Mispronunciation: TODO red highlight of mispronunced word and comment"
         )
-        if line_data["Filename"].startswith("IB"):
-            self.commit_line(
-                row_number, self.MISPRONUNCED_COLOR, comment, bonus_IB=True
-            )
-        else:
-            self.commit_line(row_number, self.MISPRONUNCED_COLOR, comment)
+        self.commit_line(row_number, self.MISPRONUNCED_COLOR, comment)
 
     @macro
     def missing(self):
@@ -385,13 +358,9 @@ class FileCutterToolkit(object):
         """
 
         row_number = self.get_selected_row()
-        line_data = self.get_line_data(row_number)
 
         comment = "Missing"
-        if line_data["Filename"].startswith("IB"):
-            self.commit_line(row_number, self.MISSING_COLOR, comment, bonus_IB=True)
-        else:
-            self.commit_line(row_number, self.MISSING_COLOR, comment)
+        self.commit_line(row_number, self.MISSING_COLOR, comment)
 
     @macro
     def statistics(self):
