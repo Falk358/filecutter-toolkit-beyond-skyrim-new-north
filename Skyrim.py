@@ -304,14 +304,7 @@ class FileCutterToolkit(object):
         """
 
         row_number = self.get_selected_row()
-        line_data = self.get_line_data(row_number)
-
-        if line_data["Filename"].startswith("IB"):
-            self.commit_line(
-                row_number, self.IB_COLOR, "Filename begins with IB", clipboard=True
-            )
-        else:
-            self.commit_line(row_number, self.PERFECT_COLOR, "Perfect", clipboard=True)
+        self.commit_line(row_number, self.PERFECT_COLOR, "Perfect", clipboard=True)
 
     @macro
     def mispelled(self):
